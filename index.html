@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Christmas Cracker - Your Holiday Wellness Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #fff9f5 0%, #ffe8e0 25%, #fff5f5 50%, #f5e6e0 100%);
+            min-height: 100vh;
+            color: #4a3833;
+        }
+
+        /* Header Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-bottom: 3px solid #f5e6e0;
+        }
+
+        .logo-container {
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 250px;
+            height: auto;
+            max-width: 90%;
+        }
+
+        .tagline {
+            font-size: 1.4em;
+            color: #a84432;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            color: #6b5651;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px auto;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+
+        .nav-tab {
+            padding: 12px 25px;
+            background: white;
+            border: 2px solid #ffe0e0;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            color: #6b5651;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #d84a4a 0%, #a84432 100%);
+            color: white;
+            border-color: #a84432;
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: #fff5f5;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Progress Dashboard */
+        .progress-dashboard {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(168, 68, 50, 0.1);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #fff9f5 0%, #ffe8e0 100%);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            color: #d84a4a;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: #6b5651;
+            margin-top: 5px;
+        }
+
+        /* Progress Chart */
+        .chart-container {
+            background: #fafafa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            height: 300px;
+            position: relative;
+        }
+
+        .chart-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #a84432;
+            font-style: italic;
+        }
+
+        /* Data Management Section */
+        .data-management {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .data-btn {
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-family: Georgia, serif;
+        }
+
+        .btn-export {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+        }
+
+        .btn-import {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+        }
+
+        .btn-compare {
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+            color: white;
+        }
+
+        .btn-clear {
+            background: #f44336;
+            color: white;
+        }
+
+        .data-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* File input styling */
+        .file-input-wrapper {
+            display: none;
+        }
+
+        /* Friends Comparison Section */
+        .comparison-section {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(168, 68, 50, 0.1);
+            padding: 40px;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .comparison-section.active {
+            display: block;
+        }
+
+        .friend-card {
+            background: #fff9f5;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #ffe0e0;
+        }
+
+        .friend-name {
+            font-size: 1.2em;
+            color: #a84432;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .friend-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .friend-stat {
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        /* Challenge Overview Card */
+        .overview-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(168, 68, 50, 0.1);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .overview-card h2 {
+            color: #a84432;
+            font-size: 2em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .countdown {
+            background: linear-gradient(135deg, #d84a4a 0%, #a84432 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .countdown h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        #days-until {
+            font-size: 3em;
+            font-weight: bold;
+        }
+
+        /* Daily Requirements Grid */
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .requirement-card {
+            background: #fff9f5;
+            border: 2px solid #ffe0e0;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .requirement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(168, 68, 50, 0.15);
+        }
+
+        .requirement-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .requirement-title {
+            color: #a84432;
+            font-size: 1.2em;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .requirement-detail {
+            color: #6b5651;
+            font-size: 0.95em;
+        }
+
+        /* Adulting Advent Section */
+        .advent-section {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(168, 68, 50, 0.1);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .advent-section h2 {
+            color: #a84432;
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .advent-subtitle {
+            text-align: center;
+            color: #6b5651;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .task-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .task-category {
+            background: linear-gradient(135deg, #fff9f5 0%, #ffe8e0 100%);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .task-category h3 {
+            color: #a84432;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-list li {
+            padding: 8px 0;
+            color: #4a3833;
+            border-bottom: 1px solid #ffe0e0;
+            font-size: 0.95em;
+        }
+
+        .task-list li:last-child {
+            border-bottom: none;
+        }
+
+        .task-list li:before {
+            content: "✨ ";
+            color: #d84a4a;
+        }
+
+        /* Tracker Section */
+        .tracker-section {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(168, 68, 50, 0.1);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .tracker-section h2 {
+            color: #a84432;
+            font-size: 2em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .daily-checklist {
+            background: #fafafa;
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        .checklist-date {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .date-input {
+            padding: 10px 20px;
+            border: 2px solid #ffe0e0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-family: Georgia, serif;
+            color: #a84432;
+            text-align: center;
+        }
+
+        .checklist-items {
+            display: grid;
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 2px solid #ffe0e0;
+            transition: all 0.3s ease;
+        }
+
+        .check-item:hover {
+            border-color: #d84a4a;
+            box-shadow: 0 4px 10px rgba(168, 68, 50, 0.1);
+        }
+
+        .check-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .check-item label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 1.05em;
+        }
+
+        .check-item input[type="checkbox"]:checked + label {
+            color: #d84a4a;
+            text-decoration: line-through;
+        }
+
+        /* History View */
+        .history-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(168, 68, 50, 0.1);
+            padding: 40px;
+        }
+
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .history-day {
+            background: #fff9f5;
+            border: 2px solid #ffe0e0;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .history-day:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(168, 68, 50, 0.15);
+        }
+
+        .history-day.complete {
+            background: linear-gradient(135deg, #d4f4dd 0%, #a8e6cf 100%);
+            border-color: #4CAF50;
+        }
+
+        .history-date {
+            font-size: 0.9em;
+            color: #6b5651;
+            margin-bottom: 5px;
+        }
+
+        .history-score {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #a84432;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b5651;
+        }
+
+        .footer p {
+            font-size: 0.95em;
+        }
+
+        /* Modal for notifications */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .modal-overlay.active {
+            display: block;
+        }
+
+        .modal h3 {
+            color: #a84432;
+            margin-bottom: 15px;
+        }
+
+        .modal p {
+            color: #6b5651;
+            margin-bottom: 20px;
+        }
+
+        .modal-btn {
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #d84a4a 0%, #a84432 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: Georgia, serif;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            .tagline {
+                font-size: 1.2em;
+            }
+
+            .requirements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .task-categories {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+
+            .nav-tab {
+                flex: 1 1 45%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="logo-container">
+            <!-- Embedded Logo - Replace the src below with your Base64 string -->
+            <!-- To get Base64: Go to base64-image.de and upload your PNG logo -->
+            <img src="data:image/png;base64,PASTE_YOUR_BASE64_STRING_HERE" 
+                 alt="Project Christmas Cracker Logo" 
+                 class="logo" 
+                 onerror="this.style.display='none'; document.getElementById('logo-backup').style.display='block';">
+            
+            <!-- Backup display if Base64 not added yet -->
+            <div id="logo-backup" style="display: none;">
+                <div style="font-size: 3em; margin-bottom: 10px;">🎄💪📚</div>
+                <h1 style="color: #a84432; font-size: 2.5em; margin: 0;">Project Christmas Cracker</h1>
+            </div>
+        </div>
+        <p class="tagline">Look & Feel Cracking This Christmas! 🎄</p>
+        <p class="subtitle">Join the ultimate holiday wellness challenge that combines fitness, self-care, and those adulting tasks you've been putting off!</p>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <div class="nav-tab active" onclick="switchTab('overview')">📋 Overview</div>
+        <div class="nav-tab" onclick="switchTab('tracker')">✅ Daily Tracker</div>
+        <div class="nav-tab" onclick="switchTab('progress')">📊 My Progress</div>
+        <div class="nav-tab" onclick="switchTab('history')">📅 History</div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Overview Tab -->
+        <div id="overview-tab" class="tab-content active">
+            <div class="overview-card">
+                <h2>The Challenge</h2>
+                
+                <div class="countdown">
+                    <h3>Days Until Christmas</h3>
+                    <div id="days-until">Loading...</div>
+                </div>
+
+                <div class="requirements-grid">
+                    <div class="requirement-card">
+                        <div class="requirement-icon">🚶‍♀️</div>
+                        <div class="requirement-title">Daily Steps</div>
+                        <div class="requirement-detail">8,000 - 12,000 steps</div>
+                    </div>
+
+                    <div class="requirement-card">
+                        <div class="requirement-icon">💪</div>
+                        <div class="requirement-title">Exercise</div>
+                        <div class="requirement-detail">3x weekly gym/workout sessions</div>
+                    </div>
+
+                    <div class="requirement-card">
+                        <div class="requirement-icon">💧</div>
+                        <div class="requirement-title">Hydration</div>
+                        <div class="requirement-detail">Hit your daily water goal</div>
+                    </div>
+
+                    <div class="requirement-card">
+                        <div class="requirement-icon">🥗</div>
+                        <div class="requirement-title">Protein</div>
+                        <div class="requirement-detail">Meet your protein target</div>
+                    </div>
+
+                    <div class="requirement-card">
+                        <div class="requirement-icon">😴</div>
+                        <div class="requirement-title">Sleep</div>
+                        <div class="requirement-detail">7-8 hours quality rest</div>
+                    </div>
+
+                    <div class="requirement-card">
+                        <div class="requirement-icon">📚</div>
+                        <div class="requirement-title">Reading</div>
+                        <div class="requirement-detail">10 minutes daily</div>
+                    </div>
+
+                    <div class="requirement-card">
+                        <div class="requirement-icon">💊</div>
+                        <div class="requirement-title">Supplements</div>
+                        <div class="requirement-detail">Daily vitamins & probiotics</div>
+                    </div>
+
+                    <div class="requirement-card">
+                        <div class="requirement-icon">✅</div>
+                        <div class="requirement-title">Adulting Task</div>
+                        <div class="requirement-detail">1 weekly task completed</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Adulting Advent Section -->
+            <div class="advent-section">
+                <h2>The Adulting Advent</h2>
+                <p class="advent-subtitle">Complete one task each week - because being a grown-up is part of glowing up!</p>
+                
+                <div class="task-categories">
+                    <div class="task-category">
+                        <h3>💬 Connection & Communication</h3>
+                        <ul class="task-list">
+                            <li>Check in with a friend you haven't spoken to</li>
+                            <li>Send a voice note instead of texting</li>
+                            <li>Schedule a coffee date or video call</li>
+                            <li>Write a proper email to a long-distance friend</li>
+                            <li>Call a family member you keep meaning to ring</li>
+                            <li>Send someone a photo that reminds you of them</li>
+                        </ul>
+                    </div>
+
+                    <div class="task-category">
+                        <h3>🏠 Life Admin</h3>
+                        <ul class="task-list">
+                            <li>Clean makeup brushes</li>
+                            <li>Donate unused items</li>
+                            <li>Deep clean one area</li>
+                            <li>Organize phone photos</li>
+                            <li>Cancel unused subscriptions</li>
+                            <li>Book overdue appointments</li>
+                            <li>Sort through paperwork</li>
+                        </ul>
+                    </div>
+
+                    <div class="task-category">
+                        <h3>✨ Self-Care Maintenance</h3>
+                        <ul class="task-list">
+                            <li>Meal prep session</li>
+                            <li>Wardrobe audit</li>
+                            <li>Update CV/LinkedIn</li>
+                            <li>Back up phone/computer</li>
+                            <li>Replace old underwear/socks</li>
+                            <li>Schedule health checkups</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Tracker Tab -->
+        <div id="tracker-tab" class="tab-content">
+            <div class="tracker-section">
+                <h2>Today's Tracker</h2>
+                <div class="daily-checklist">
+                    <div class="checklist-date">
+                        <input type="date" class="date-input" id="tracker-date">
+                    </div>
+                    
+                    <div class="checklist-items">
+                        <div class="check-item">
+                            <input type="checkbox" id="steps">
+                            <label for="steps">✅ Completed 8,000+ steps</label>
+                        </div>
+                        
+                        <div class="check-item">
+                            <input type="checkbox" id="water">
+                            <label for="water">💧 Hit water intake goal</label>
+                        </div>
+                        
+                        <div class="check-item">
+                            <input type="checkbox" id="protein">
+                            <label for="protein">🥗 Met protein target</label>
+                        </div>
+                        
+                        <div class="check-item">
+                            <input type="checkbox" id="sleep">
+                            <label for="sleep">😴 Got 7-8 hours sleep</label>
+                        </div>
+                        
+                        <div class="check-item">
+                            <input type="checkbox" id="reading">
+                            <label for="reading">📚 Read for 10 minutes</label>
+                        </div>
+                        
+                        <div class="check-item">
+                            <input type="checkbox" id="supplements">
+                            <label for="supplements">💊 Took supplements</label>
+                        </div>
+                        
+                        <div class="check-item">
+                            <input type="checkbox" id="exercise">
+                            <label for="exercise">💪 Completed workout (if scheduled)</label>
+                        </div>
+                        
+                        <div class="check-item">
+                            <input type="checkbox" id="adulting">
+                            <label for="adulting">✨ Did an adulting task</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Tab -->
+        <div id="progress-tab" class="tab-content">
+            <div class="progress-dashboard">
+                <h2>Your Progress Dashboard</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-days">0</div>
+                        <div class="stat-label">Days Tracked</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number" id="current-streak">0</div>
+                        <div class="stat-label">Current Streak</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number" id="completion-rate">0%</div>
+                        <div class="stat-label">Completion Rate</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number" id="perfect-days">0</div>
+                        <div class="stat-label">Perfect Days</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-placeholder">
+                        <canvas id="progressChart" style="width: 100%; height: 100%;"></canvas>
+                    </div>
+                </div>
+
+                <div class="data-management">
+                    <button class="data-btn btn-export" onclick="exportProgress()">
+                        📥 Export My Progress
+                    </button>
+                    <button class="data-btn btn-import" onclick="document.getElementById('import-file').click()">
+                        📤 Import Progress
+                    </button>
+                    <button class="data-btn btn-compare" onclick="document.getElementById('compare-file').click()">
+                        👥 Compare with Friend
+                    </button>
+                    <button class="data-btn btn-clear" onclick="clearAllData()">
+                        🗑️ Clear All Data
+                    </button>
+                    
+                    <input type="file" id="import-file" class="file-input-wrapper" accept=".json" onchange="importProgress(event)">
+                    <input type="file" id="compare-file" class="file-input-wrapper" accept=".json" onchange="compareFriend(event)">
+                </div>
+            </div>
+
+            <!-- Friends Comparison Section (hidden by default) -->
+            <div class="comparison-section" id="comparison-section">
+                <h2>Friend Comparison</h2>
+                <div id="friend-comparisons"></div>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="history-tab" class="tab-content">
+            <div class="history-container">
+                <h2>Your Challenge History</h2>
+                <div class="history-grid" id="history-grid">
+                    <!-- History will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for notifications -->
+    <div class="modal-overlay" onclick="closeModal()"></div>
+    <div class="modal" id="modal">
+        <h3 id="modal-title">Notification</h3>
+        <p id="modal-message">Message goes here</p>
+        <button class="modal-btn" onclick="closeModal()">OK</button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2024 Project Christmas Cracker | Created with ❤️ for a healthier, happier holiday season</p>
+    </footer>
+
+    <script>
+        // Initialize Chart.js for progress visualization
+        let progressChart = null;
+
+        // Calculate days until Christmas
+        function daysUntilChristmas() {
+            const today = new Date();
+            const christmas = new Date(today.getFullYear(), 11, 25);
+            
+            if (today > christmas) {
+                christmas.setFullYear(christmas.getFullYear() + 1);
+            }
+            
+            const timeDiff = christmas - today;
+            const days = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+            
+            document.getElementById('days-until').textContent = days;
+        }
+
+        // Set today's date in the tracker
+        function setTodayDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tracker-date').value = today;
+        }
+
+        // Save checkbox states to localStorage
+        function saveProgress() {
+            const checkboxes = document.querySelectorAll('.check-item input[type="checkbox"]');
+            const date = document.getElementById('tracker-date').value;
+            const progress = {};
+            
+            checkboxes.forEach(checkbox => {
+                progress[checkbox.id] = checkbox.checked;
+            });
+            
+            // Save individual day
+            localStorage.setItem(`progress-${date}`, JSON.stringify(progress));
+            
+            // Update overall progress data
+            updateProgressStats();
+            updateHistory();
+        }
+
+        // Load checkbox states from localStorage
+        function loadProgress() {
+            const date = document.getElementById('tracker-date').value;
+            const saved = localStorage.getItem(`progress-${date}`);
+            
+            if (saved) {
+                const progress = JSON.parse(saved);
+                Object.keys(progress).forEach(id => {
+                    const checkbox = document.getElementById(id);
+                    if (checkbox) {
+                        checkbox.checked = progress[id];
+                    }
+                });
+            } else {
+                document.querySelectorAll('.check-item input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            }
+        }
+
+        // Calculate and update progress statistics
+        function updateProgressStats() {
+            const allKeys = Object.keys(localStorage).filter(key => key.startsWith('progress-'));
+            const totalDays = allKeys.length;
+            
+            let perfectDays = 0;
+            let totalCompletion = 0;
+            let currentStreak = 0;
+            let lastDate = null;
+            
+            // Sort dates
+            const dates = allKeys.map(key => key.replace('progress-', '')).sort();
+            
+            dates.forEach((date, index) => {
+                const data = JSON.parse(localStorage.getItem(`progress-${date}`));
+                const checkboxes = Object.values(data);
+                const completed = checkboxes.filter(c => c).length;
+                const completionRate = (completed / checkboxes.length) * 100;
+                
+                totalCompletion += completionRate;
+                
+                if (completionRate === 100) {
+                    perfectDays++;
+                }
+                
+                // Calculate streak
+                if (index === 0) {
+                    currentStreak = completionRate > 0 ? 1 : 0;
+                    lastDate = new Date(date);
+                } else {
+                    const currentDate = new Date(date);
+                    const dayDiff = (currentDate - lastDate) / (1000 * 60 * 60 * 24);
+                    
+                    if (dayDiff === 1 && completionRate > 0) {
+                        currentStreak++;
+                    } else if (completionRate > 0) {
+                        currentStreak = 1;
+                    } else {
+                        currentStreak = 0;
+                    }
+                    lastDate = currentDate;
+                }
+            });
+            
+            // Update display
+            document.getElementById('total-days').textContent = totalDays;
+            document.getElementById('current-streak').textContent = currentStreak;
+            document.getElementById('perfect-days').textContent = perfectDays;
+            document.getElementById('completion-rate').textContent = 
+                totalDays > 0 ? Math.round(totalCompletion / totalDays) + '%' : '0%';
+            
+            // Update chart
+            updateProgressChart(dates);
+        }
+
+        // Update progress chart
+        function updateProgressChart(dates) {
+            const ctx = document.getElementById('progressChart');
+            if (!ctx) return;
+            
+            const chartData = dates.map(date => {
+                const data = JSON.parse(localStorage.getItem(`progress-${date}`));
+                const completed = Object.values(data).filter(c => c).length;
+                return {
+                    date: date,
+                    score: (completed / Object.keys(data).length) * 100
+                };
+            });
+            
+            // Simple line chart visualization (you could enhance this with Chart.js)
+            const canvas = ctx;
+            const context = canvas.getContext('2d');
+            
+            // Clear canvas
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (chartData.length === 0) {
+                context.fillStyle = '#a84432';
+                context.font = '16px Georgia';
+                context.textAlign = 'center';
+                context.fillText('Start tracking to see your progress chart!', canvas.width / 2, canvas.height / 2);
+                return;
+            }
+            
+            // Draw simple line chart
+            const padding = 40;
+            const width = canvas.width - padding * 2;
+            const height = canvas.height - padding * 2;
+            
+            context.strokeStyle = '#d84a4a';
+            context.lineWidth = 2;
+            context.beginPath();
+            
+            chartData.forEach((point, index) => {
+                const x = padding + (index / (chartData.length - 1 || 1)) * width;
+                const y = padding + (1 - point.score / 100) * height;
+                
+                if (index === 0) {
+                    context.moveTo(x, y);
+                } else {
+                    context.lineTo(x, y);
+                }
+                
+                // Draw point
+                context.fillStyle = '#d84a4a';
+                context.beginPath();
+                context.arc(x, y, 4, 0, Math.PI * 2);
+                context.fill();
+            });
+            
+            context.stroke();
+        }
+
+        // Export progress as JSON
+        function exportProgress() {
+            const allData = {};
+            const keys = Object.keys(localStorage).filter(key => key.startsWith('progress-'));
+            
+            keys.forEach(key => {
+                allData[key] = JSON.parse(localStorage.getItem(key));
+            });
+            
+            const exportData = {
+                name: prompt('Enter your name for this export:') || 'Friend',
+                exportDate: new Date().toISOString(),
+                data: allData
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `christmas-cracker-progress-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showModal('Success!', 'Your progress has been exported. Share this file with friends to compare!');
+        }
+
+        // Import progress
+        function importProgress(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importData = JSON.parse(e.target.result);
+                    
+                    if (confirm(`Import progress from ${importData.name}? This will replace your current data.`)) {
+                        // Clear current data
+                        const keys = Object.keys(localStorage).filter(key => key.startsWith('progress-'));
+                        keys.forEach(key => localStorage.removeItem(key));
+                        
+                        // Import new data
+                        Object.keys(importData.data).forEach(key => {
+                            localStorage.setItem(key, JSON.stringify(importData.data[key]));
+                        });
+                        
+                        updateProgressStats();
+                        updateHistory();
+                        loadProgress();
+                        
+                        showModal('Success!', `Progress imported from ${importData.name}`);
+                    }
+                } catch (error) {
+                    showModal('Error', 'Invalid file format. Please select a valid progress export file.');
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            event.target.value = '';
+        }
+
+        // Compare with friend's progress
+        function compareFriend(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const friendData = JSON.parse(e.target.result);
+                    displayComparison(friendData);
+                } catch (error) {
+                    showModal('Error', 'Invalid file format. Please select a valid progress export file.');
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            event.target.value = '';
+        }
+
+        // Display friend comparison
+        function displayComparison(friendData) {
+            const comparisonSection = document.getElementById('comparison-section');
+            const comparisonsDiv = document.getElementById('friend-comparisons');
+            
+            // Calculate friend's stats
+            const friendKeys = Object.keys(friendData.data);
+            let friendPerfectDays = 0;
+            let friendTotalCompletion = 0;
+            
+            friendKeys.forEach(key => {
+                const data = friendData.data[key];
+                const completed = Object.values(data).filter(c => c).length;
+                const rate = (completed / Object.values(data).length) * 100;
+                friendTotalCompletion += rate;
+                if (rate === 100) friendPerfectDays++;
+            });
+            
+            // Get your stats
+            const yourKeys = Object.keys(localStorage).filter(key => key.startsWith('progress-'));
+            let yourPerfectDays = 0;
+            let yourTotalCompletion = 0;
+            
+            yourKeys.forEach(key => {
+                const data = JSON.parse(localStorage.getItem(key));
+                const completed = Object.values(data).filter(c => c).length;
+                const rate = (completed / Object.values(data).length) * 100;
+                yourTotalCompletion += rate;
+                if (rate === 100) yourPerfectDays++;
+            });
+            
+            // Display comparison
+            comparisonsDiv.innerHTML = `
+                <div class="friend-card">
+                    <div class="friend-name">${friendData.name}'s Progress</div>
+                    <div class="friend-stats">
+                        <div class="friend-stat">
+                            <strong>${friendKeys.length}</strong><br>Days Tracked
+                        </div>
+                        <div class="friend-stat">
+                            <strong>${friendPerfectDays}</strong><br>Perfect Days
+                        </div>
+                        <div class="friend-stat">
+                            <strong>${Math.round(friendTotalCompletion / friendKeys.length || 0)}%</strong><br>Avg Completion
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="friend-card">
+                    <div class="friend-name">Your Progress</div>
+                    <div class="friend-stats">
+                        <div class="friend-stat">
+                            <strong>${yourKeys.length}</strong><br>Days Tracked
+                        </div>
+                        <div class="friend-stat">
+                            <strong>${yourPerfectDays}</strong><br>Perfect Days
+                        </div>
+                        <div class="friend-stat">
+                            <strong>${Math.round(yourTotalCompletion / yourKeys.length || 0)}%</strong><br>Avg Completion
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            comparisonSection.classList.add('active');
+        }
+
+        // Update history view
+        function updateHistory() {
+            const historyGrid = document.getElementById('history-grid');
+            const keys = Object.keys(localStorage).filter(key => key.startsWith('progress-'));
+            
+            if (keys.length === 0) {
+                historyGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #a84432;">No history yet - start tracking today!</p>';
+                return;
+            }
+            
+            historyGrid.innerHTML = '';
+            
+            keys.sort().reverse().forEach(key => {
+                const date = key.replace('progress-', '');
+                const data = JSON.parse(localStorage.getItem(key));
+                const completed = Object.values(data).filter(c => c).length;
+                const total = Object.values(data).length;
+                const percentage = Math.round((completed / total) * 100);
+                
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'history-day' + (percentage === 100 ? ' complete' : '');
+                dayDiv.innerHTML = `
+                    <div class="history-date">${formatDate(date)}</div>
+                    <div class="history-score">${completed}/${total}</div>
+                    <div style="font-size: 0.9em; color: #6b5651;">${percentage}%</div>
+                `;
+                dayDiv.onclick = () => {
+                    document.getElementById('tracker-date').value = date;
+                    loadProgress();
+                    switchTab('tracker');
+                };
+                
+                historyGrid.appendChild(dayDiv);
+            });
+        }
+
+        // Format date for display
+        function formatDate(dateStr) {
+            const date = new Date(dateStr + 'T00:00:00');
+            const options = { month: 'short', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        // Clear all data
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all your progress? This cannot be undone!')) {
+                const keys = Object.keys(localStorage).filter(key => key.startsWith('progress-'));
+                keys.forEach(key => localStorage.removeItem(key));
+                
+                updateProgressStats();
+                updateHistory();
+                loadProgress();
+                
+                showModal('Data Cleared', 'All progress data has been removed.');
+            }
+        }
+
+        // Switch tabs
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all nav tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            
+            // Add active class to corresponding nav tab
+            const navTabs = document.querySelectorAll('.nav-tab');
+            const tabIndex = ['overview', 'tracker', 'progress', 'history'].indexOf(tabName);
+            if (tabIndex !== -1) {
+                navTabs[tabIndex].classList.add('active');
+            }
+            
+            // Update stats if switching to progress tab
+            if (tabName === 'progress') {
+                updateProgressStats();
+            } else if (tabName === 'history') {
+                updateHistory();
+            }
+        }
+
+        // Show modal
+        function showModal(title, message) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+            document.getElementById('modal').classList.add('active');
+            document.querySelector('.modal-overlay').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.querySelector('.modal-overlay').classList.remove('active');
+        }
+
+        // Initialize
+        daysUntilChristmas();
+        setTodayDate();
+        loadProgress();
+        updateProgressStats();
+        updateHistory();
+
+        // Add event listeners
+        document.querySelectorAll('.check-item input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', saveProgress);
+        });
+
+        document.getElementById('tracker-date').addEventListener('change', loadProgress);
+    </script>
+</body>
+</html>
