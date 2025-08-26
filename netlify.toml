@@ -6,10 +6,7 @@
 [build.environment]
   NODE_VERSION = "18"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# Next.js handles routing automatically, no redirects needed
 
 [dev]
   command = "npm run dev"
