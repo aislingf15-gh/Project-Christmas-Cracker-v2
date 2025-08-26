@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -132,15 +132,6 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 15px 40px rgba(168, 68, 50, 0.15);
 }
 
-/* Button styles */
-.btn-primary {
-  @apply bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-3 rounded-full font-medium transition-all duration-300 hover:from-red-700 hover:to-red-800 hover:shadow-lg hover:-translate-y-1;
-}
-
-.btn-secondary {
-  @apply bg-white text-red-700 border-2 border-red-200 px-6 py-3 rounded-full font-medium transition-all duration-300 hover:bg-red-50 hover:border-red-300;
-}
-
 /* Card styles */
 .card {
   @apply bg-white rounded-2xl elegant-shadow p-6;
@@ -148,34 +139,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .card-hover {
   @apply card elegant-shadow-hover;
-}
-
-/* Progress bar */
-.progress-bar {
-  @apply w-full bg-gray-200 rounded-full h-3 overflow-hidden;
-}
-
-.progress-fill {
-  @apply h-full bg-gradient-to-r from-red-500 to-red-600 transition-all duration-500 ease-out;
-}
-
-/* Checkbox styling */
-.custom-checkbox {
-  @apply w-5 h-5 text-red-600 bg-white border-2 border-red-200 rounded focus:ring-red-500 focus:ring-2;
-}
-
-/* Input styling */
-.elegant-input {
-  @apply w-full px-4 py-3 border-2 border-red-200 rounded-lg focus:border-red-500 focus:outline-none transition-colors duration-200 bg-white;
-}
-
-/* Navigation tabs */
-.nav-tab {
-  @apply px-6 py-3 text-gray-600 font-medium transition-all duration-300 cursor-pointer border-b-2 border-transparent hover:text-red-700 hover:border-red-200;
-}
-
-.nav-tab.active {
-  @apply text-red-700 border-red-600;
 }
 
 /* Responsive design */
