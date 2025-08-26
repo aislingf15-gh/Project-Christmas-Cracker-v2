@@ -6,8 +6,6 @@
 [build.environment]
   NODE_VERSION = "18"
 
-# Next.js handles routing automatically, no redirects needed
-
 [dev]
   command = "npm run dev"
   port = 3000

@@ -12,8 +12,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Ensure proper static generation for Netlify
-  output: 'standalone',
   // Disable experimental features for production
   experimental: {},
 };
