@@ -434,7 +434,7 @@ export default function Home() {
             
             {/* User Menu */}
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-3 bg-gradient-to-r from-green-100 to-red-100 px-6 py-3 rounded-full shadow-sm">
+              <div className="flex items-center gap-3 bg-white border border-gray-200 px-6 py-3 rounded-full shadow-sm">
                 <Clock className="w-5 h-5 text-gray-700" />
                 <span className="text-xl font-light text-gray-900">{daysUntilChristmas}</span>
                 <span className="text-gray-700 text-sm font-medium">days until Christmas</span>
@@ -464,7 +464,7 @@ export default function Home() {
       </header>
 
       {/* Daily Quote */}
-      <div className="bg-gradient-to-r from-green-50 via-red-50 to-green-50 py-6">
+      <div className="bg-white py-6">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center flex justify-center gap-6">
             <div className="bg-white px-8 py-6 rounded-xl border border-gray-200 shadow-lg w-96">
