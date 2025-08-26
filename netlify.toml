@@ -6,6 +6,12 @@
 [build.environment]
   NODE_VERSION = "18"
 
+# Next.js routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 [dev]
   command = "npm run dev"
   port = 3000
