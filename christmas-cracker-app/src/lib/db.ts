@@ -4,7 +4,7 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// Create Prisma client with optimized settings for serverless environments
+// Create Prisma client with optimized settings for Supabase Transaction pooler
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({
   log: ['error', 'warn'],
   datasources: {
@@ -12,7 +12,7 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient({
       url: process.env.DATABASE_URL
     }
   },
-  // Optimize for serverless environments
+  // Disable prepared statements for Transaction pooler compatibility
   __internal: {
     engine: {
       // Use connection pooling optimized for serverless
