@@ -243,8 +243,13 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    if (user) {
+    if (user && user.id) {
+      console.log('User changed, loading progress for:', user.id)
       loadProgressFromAPI()
+    } else if (user && !user.id) {
+      console.log('User object exists but has no ID, clearing...')
+      setUser(null)
+      localStorage.removeItem('christmas-cracker-user')
     }
   }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -263,20 +268,39 @@ export default function Home() {
   }
 
   const loadUserFromStorage = () => {
-    const savedUser = localStorage.getItem('christmas-cracker-user')
-    if (savedUser) {
-      setUser(JSON.parse(savedUser))
+    try {
+      const savedUser = localStorage.getItem('christmas-cracker-user')
+      if (savedUser) {
+        const userData = JSON.parse(savedUser)
+        console.log('Loaded user from storage:', userData)
+        if (userData && userData.id) {
+          setUser(userData)
+        } else {
+          console.log('Invalid user data in storage, clearing...')
+          localStorage.removeItem('christmas-cracker-user')
+        }
+      }
+    } catch (error) {
+      console.error('Error loading user from storage:', error)
+      localStorage.removeItem('christmas-cracker-user')
     }
   }
 
   const loadProgressFromAPI = async () => {
-    if (!user) return
+    if (!user || !user.id) {
+      console.log('No valid user found, skipping progress load')
+      return
+    }
     
     try {
       setIsLoading(true)
+      console.log('Loading progress for user:', user.id)
       const response = await fetch(`/api/progress?userId=${user.id}`)
+      console.log('Progress load response status:', response.status)
+      
       if (response.ok) {
         const data = await response.json()
+        console.log('Progress data loaded:', data.length, 'entries')
         // Transform the data to match our frontend format
         const transformedData = data.map((entry: ApiProgressEntry) => ({
           id: entry.id,
@@ -298,6 +322,10 @@ export default function Home() {
           adultingTask: entry.adultingTask
         }))
         setProgressData(transformedData)
+      } else {
+        console.error('Failed to load progress, status:', response.status)
+        const errorData = await response.json().catch(() => ({}))
+        console.error('Error details:', errorData)
       }
     } catch (error) {
       console.error('Error loading progress:', error)
