@@ -6,6 +6,7 @@ export async function GET(request: NextRequest) {
     // Check environment variables (without exposing sensitive data)
     const envCheck = {
       hasDatabaseUrl: !!process.env.DATABASE_URL,
+      databaseUrlPreview: process.env.DATABASE_URL ? `${process.env.DATABASE_URL.substring(0, 20)}...` : 'not set',
       hasSupabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
       hasSupabaseKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
       nodeEnv: process.env.NODE_ENV,
