@@ -1,130 +1,107 @@
-# Vercel Deployment Guide
+# Vercel Deployment Fix Guide
 
-## Prerequisites
-- A Vercel account (free at vercel.com)
-- Your existing Supabase PostgreSQL database (already set up!)
+## Issue: "User ID is required" Error
 
-## Step 1: Get Your Supabase Database URL
+Your Christmas Cracker app is deployed on Vercel but the daily tracker is not saving progress. The error "User ID is required" indicates that the user authentication or database connection is failing.
 
-Since you already have Supabase working, you just need to get your connection string:
+## Root Cause
 
-1. Go to your [Supabase Dashboard](https://supabase.com/dashboard)
-2. Select your project
-3. Go to **Settings** → **Database**
-4. Copy your **Connection string** (URI format)
-5. It should look like: `postgresql://postgres:[YOUR-PASSWORD]@db.[YOUR-PROJECT-REF].supabase.co:5432/postgres`
+The main issue is likely that your environment variables are not properly configured in Vercel, causing the database connection to fail.
 
-## Step 2: Deploy to Vercel
+## Step-by-Step Fix
 
-### Method 1: GitHub Integration (Recommended)
-1. Push your code to GitHub
-2. Go to [vercel.com](https://vercel.com)
-3. Click "New Project"
-4. Import your GitHub repository
-5. Vercel will automatically detect it's a Next.js project
-6. Configure your project settings:
-   - **Framework Preset**: Next.js (auto-detected)
-   - **Root Directory**: `christmas-cracker-app`
-   - **Build Command**: `npm run build` (auto-detected)
-   - **Output Directory**: `.next` (auto-detected)
+### 1. Configure Environment Variables in Vercel
 
-### Method 2: Vercel CLI
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Navigate to your project
-cd christmas-cracker-app
-
-# Deploy
-vercel
-```
-
-## Step 3: Configure Environment Variables
-
-In your Vercel project dashboard:
-
-1. Go to **Settings** → **Environment Variables**
-2. Add the following variables:
+1. Go to your Vercel dashboard
+2. Select your Christmas Cracker project
+3. Go to **Settings** → **Environment Variables**
+4. Add the following environment variables:
 
 ```
-DATABASE_URL=your_supabase_connection_string
+DATABASE_URL=postgresql://postgres:M25albay25!@db.weovzieksanrzpaacbed.supabase.co:5432/postgres
+NEXT_PUBLIC_SUPABASE_URL=https://weovzieksanrzpaacbed.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlb3Z6aWVrc2FucnpwYWFjYmVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3ODk1NjIsImV4cCI6MjA3MTM2NTU2Mn0.Q0dKfwh1h84HorWkTvdaf4aNWIFob8U8ss8MiUcJY60
 NODE_ENV=production
-NEXTAUTH_URL=https://your-domain.vercel.app
-NEXTAUTH_SECRET=your-secret-key-here
 ```
 
-### Your Supabase Database URL Format:
+5. Make sure to select **Production**, **Preview**, and **Development** environments
+6. Click **Save**
+
+### 2. Test Database Connection
+
+After adding the environment variables, visit your deployed app and go to:
 ```
-postgresql://postgres:[YOUR-PASSWORD]@db.[YOUR-PROJECT-REF].supabase.co:5432/postgres
-```
-
-## Step 4: Database Setup (Already Done!)
-
-Since you already have Supabase working, your database should already be set up. However, if you need to verify:
-
-### Option A: Using Vercel CLI
-```bash
-# Navigate to your project
-cd christmas-cracker-app
-
-# Verify your database connection
-npx prisma db push
-
-# Generate Prisma client
-npx prisma generate
+https://your-app.vercel.app/api/debug
 ```
 
-### Option B: Check in Supabase Dashboard
-1. Go to your Supabase project
-2. Navigate to **Table Editor**
-3. You should see your tables: `User`, `ProgressEntry`, `ChallengeSettings`, `LeaderboardEntry`
+This will show you if:
+- Environment variables are properly set
+- Database connection is working
 
-## Step 5: Verify Deployment
+### 3. Redeploy Your App
 
-1. Your app should be available at `https://your-project-name.vercel.app`
-2. Test the login functionality
-3. Test creating and saving progress entries
-4. Check that the leaderboard works
+1. In Vercel dashboard, go to **Deployments**
+2. Find your latest deployment
+3. Click the three dots menu
+4. Select **Redeploy**
+
+### 4. Test the Fix
+
+1. Visit your deployed app
+2. Create a new account or log in
+3. Try to save progress in the daily tracker
+4. Check if the progress is saved and appears in the progress overview
 
 ## Troubleshooting
 
-### Common Issues:
+### If the debug endpoint shows database connection failure:
 
-1. **Database Connection Errors**
-   - Verify your Supabase `DATABASE_URL` is correct
-   - Ensure your Supabase project is active
-   - Check if your database password is correct
+1. **Check Supabase Database**: Make sure your Supabase database is active and accessible
+2. **Verify Connection String**: Double-check the DATABASE_URL format
+3. **Check IP Restrictions**: Ensure Vercel's IP addresses are allowed in Supabase
 
-2. **Build Errors**
-   - Check the build logs in Vercel dashboard
-   - Ensure all dependencies are in `package.json`
-   - Verify TypeScript/ESLint configurations
+### If user creation fails:
 
-3. **API Route Errors**
-   - Check function logs in Vercel dashboard
-   - Verify environment variables are set correctly
-   - Ensure Prisma client is generated
+1. Check the browser console for errors
+2. Check Vercel function logs in the dashboard
+3. Verify the database schema is properly migrated
 
-### Environment Variables Checklist:
-- [ ] `DATABASE_URL` - Your Supabase PostgreSQL connection string
-- [ ] `NODE_ENV` - Set to "production"
-- [ ] `NEXTAUTH_URL` - Your Vercel app URL
-- [ ] `NEXTAUTH_SECRET` - A secure random string
+### If progress saving still fails:
 
-## Benefits of Vercel + Supabase:
+1. Check the browser network tab for API errors
+2. Look at Vercel function logs for detailed error messages
+3. Verify the user ID is being passed correctly
 
-1. **Perfect Integration** - Both services work seamlessly together
-2. **Your Existing Data** - All your current data will be preserved
-3. **Automatic Scaling** - Both Vercel and Supabase scale automatically
-4. **Real-time Features** - Supabase provides real-time database capabilities
-5. **Free Tiers** - Both services have generous free plans
+## Database Migration (if needed)
 
-## Next Steps:
+If your database schema is not up to date, you may need to run migrations:
 
-1. Deploy your app following the steps above
-2. Use your existing Supabase database URL
-3. Test all functionality
-4. Share your app URL with users!
+1. In your local development environment:
+```bash
+cd christmas-cracker-app
+npx prisma db push
+```
 
-Your app should work perfectly on Vercel with your existing Supabase database - no data migration needed!
+2. Or if you have direct database access, run the Prisma migrations manually
+
+## Monitoring
+
+After deployment, monitor your app's performance:
+
+1. Check Vercel Analytics for any errors
+2. Monitor database connection usage
+3. Watch for any API timeouts or failures
+
+## Additional Notes
+
+- The app uses localStorage for user session management, which should work fine in production
+- All API routes now have improved error logging to help debug issues
+- The debug endpoint will help identify configuration problems
+
+## Support
+
+If you continue to have issues after following these steps:
+
+1. Check the Vercel function logs for detailed error messages
+2. Verify your Supabase database is properly configured
+3. Test the API endpoints directly using tools like Postman or curl
