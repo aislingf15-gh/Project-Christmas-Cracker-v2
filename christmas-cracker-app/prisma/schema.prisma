@@ -24,12 +24,14 @@ model User {
   progressEntries  ProgressEntry[]
   challengeSettings ChallengeSettings?
   leaderboardEntry LeaderboardEntry?
+
+  @@map("users")
 }
 
 model ProgressEntry {
   id                String   @id @default(cuid())
   userId            String
-  date              DateTime
+  date              DateTime @db.Date
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   
@@ -57,6 +59,7 @@ model ProgressEntry {
   
   // Composite unique constraint
   @@unique([userId, date])
+  @@map("progress_entries")
 }
 
 model ChallengeSettings {
@@ -82,6 +85,8 @@ model ChallengeSettings {
   
   // Relations
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("challenge_settings")
 }
 
 model LeaderboardEntry {
@@ -95,4 +100,6 @@ model LeaderboardEntry {
   
   // Relations
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("leaderboard_entries")
 }

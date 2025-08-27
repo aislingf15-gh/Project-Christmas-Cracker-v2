@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
+import { prisma, checkDatabaseConnection } from '@/lib/db'
 
 export async function GET(request: NextRequest) {
   try {
@@ -38,6 +38,13 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Check database connection first
+    const isConnected = await checkDatabaseConnection()
+    if (!isConnected) {
+      console.error('Database connection failed in progress POST')
+      return NextResponse.json({ error: 'Database connection failed' }, { status: 503 })
+    }
+
     const body = await request.json()
     console.log('Progress POST request body:', { ...body, userId: body.userId ? 'present' : 'missing' })
     

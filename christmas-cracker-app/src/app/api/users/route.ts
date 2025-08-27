@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
+import { prisma, checkDatabaseConnection } from '@/lib/db'
 
 export async function GET(request: NextRequest) {
   try {
@@ -34,6 +34,13 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Check database connection first
+    const isConnected = await checkDatabaseConnection()
+    if (!isConnected) {
+      console.error('Database connection failed in users POST')
+      return NextResponse.json({ error: 'Database connection failed' }, { status: 503 })
+    }
+
     const body = await request.json()
     const { email, name } = body
 
@@ -45,15 +52,6 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('Creating new user with email:', email)
-
-    // Test database connection first
-    try {
-      await prisma.$connect()
-      console.log('Database connection successful')
-    } catch (dbError) {
-      console.error('Database connection failed:', dbError)
-      return NextResponse.json({ error: 'Database connection failed' }, { status: 500 })
-    }
 
     // Create user with default challenge settings
     try {
