@@ -11,47 +11,22 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient({
     db: {
       url: process.env.DATABASE_URL
     }
-  },
-  // Disable prepared statements for Transaction pooler compatibility
-  __internal: {
-    engine: {
-      // Use connection pooling optimized for serverless
-      connectionLimit: 1,
-      pool: {
-        min: 0,
-        max: 1
-      }
-    }
   }
 })
 
 // Only create one instance in development
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
-// Add connection health check with retry logic
+// Simplified connection health check
 export async function checkDatabaseConnection() {
-  const maxRetries = 3
-  let retryCount = 0
-
-  while (retryCount < maxRetries) {
-    try {
-      await prisma.$queryRaw`SELECT 1`
-      return true
-    } catch (error) {
-      retryCount++
-      console.error(`Database connection attempt ${retryCount} failed:`, error)
-      
-      if (retryCount >= maxRetries) {
-        console.error('Max retries reached for database connection')
-        return false
-      }
-      
-      // Wait before retrying (exponential backoff)
-      await new Promise(resolve => setTimeout(resolve, Math.pow(2, retryCount) * 100))
-    }
+  try {
+    // Simple query to test connection
+    await prisma.$queryRaw`SELECT 1`
+    return true
+  } catch (error) {
+    console.error('Database connection check failed:', error)
+    return false
   }
-  
-  return false
 }
 
 // Add a function to safely disconnect (useful for serverless environments)
