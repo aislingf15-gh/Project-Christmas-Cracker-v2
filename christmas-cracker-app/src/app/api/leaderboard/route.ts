@@ -1,24 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
+import { prisma, withDatabaseRetry } from '@/lib/db'
 
 export async function GET() {
   try {
     // Get all leaderboard entries with user info, ordered by current streak
-    const leaderboard = await prisma.leaderboardEntry.findMany({
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true
+    const leaderboard = await withDatabaseRetry(async () => {
+      return await prisma.leaderboardEntry.findMany({
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true
+            }
           }
-        }
-      },
-      orderBy: [
-        { currentStreak: 'desc' },
-        { longestStreak: 'desc' },
-        { perfectDays: 'desc' }
-      ]
+        },
+        orderBy: [
+          { currentStreak: 'desc' },
+          { longestStreak: 'desc' },
+          { perfectDays: 'desc' }
+        ]
+      })
     })
 
     return NextResponse.json(leaderboard)
@@ -38,9 +40,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Get user's progress entries - order by date ascending for proper streak calculation
-    const progressEntries = await prisma.progressEntry.findMany({
-      where: { userId },
-      orderBy: { date: 'asc' }
+    const progressEntries = await withDatabaseRetry(async () => {
+      return await prisma.progressEntry.findMany({
+        where: { userId },
+        orderBy: { date: 'asc' }
+      })
     })
 
     // Calculate streaks and stats
@@ -131,23 +135,25 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Upsert leaderboard entry
-    const leaderboardEntry = await prisma.leaderboardEntry.upsert({
-      where: { userId },
-      update: {
-        currentStreak,
-        longestStreak,
-        totalDaysTracked,
-        perfectDays,
-        lastUpdated: new Date()
-      },
-      create: {
-        userId,
-        currentStreak,
-        longestStreak,
-        totalDaysTracked,
-        perfectDays
-      }
+    // Upsert leaderboard entry using retry logic
+    const leaderboardEntry = await withDatabaseRetry(async () => {
+      return await prisma.leaderboardEntry.upsert({
+        where: { userId },
+        update: {
+          currentStreak,
+          longestStreak,
+          totalDaysTracked,
+          perfectDays,
+          lastUpdated: new Date()
+        },
+        create: {
+          userId,
+          currentStreak,
+          longestStreak,
+          totalDaysTracked,
+          perfectDays
+        }
+      })
     })
 
     return NextResponse.json(leaderboardEntry)

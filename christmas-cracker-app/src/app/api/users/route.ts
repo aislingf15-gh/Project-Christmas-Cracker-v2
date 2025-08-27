@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma, checkDatabaseConnection } from '@/lib/db'
+import { prisma, checkDatabaseConnection, withDatabaseRetry } from '@/lib/db'
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,15 +13,17 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 })
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email },
-      include: {
-        progressEntries: {
-          orderBy: { date: 'desc' },
-          take: 30 // Last 30 entries
-        },
-        challengeSettings: true
-      }
+    const user = await withDatabaseRetry(async () => {
+      return await prisma.user.findUnique({
+        where: { email },
+        include: {
+          progressEntries: {
+            orderBy: { date: 'desc' },
+            take: 30 // Last 30 entries
+          },
+          challengeSettings: true
+        }
+      })
     })
 
     console.log('User lookup result:', user ? 'found' : 'not found')
@@ -53,21 +55,23 @@ export async function POST(request: NextRequest) {
 
     console.log('Creating new user with email:', email)
 
-    // Create user with default challenge settings
+    // Create user with default challenge settings using retry logic
     try {
-      const user = await prisma.user.create({
-        data: {
-          email,
-          name,
-          challengeSettings: {
-            create: {
-              // Default settings will be applied from schema
+      const user = await withDatabaseRetry(async () => {
+        return await prisma.user.create({
+          data: {
+            email,
+            name,
+            challengeSettings: {
+              create: {
+                // Default settings will be applied from schema
+              }
             }
+          },
+          include: {
+            challengeSettings: true
           }
-        },
-        include: {
-          challengeSettings: true
-        }
+        })
       })
 
       console.log('User created successfully:', user.id)

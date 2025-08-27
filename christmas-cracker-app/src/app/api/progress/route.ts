@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma, checkDatabaseConnection } from '@/lib/db'
+import { prisma, checkDatabaseConnection, withDatabaseRetry } from '@/lib/db'
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,20 +13,24 @@ export async function GET(request: NextRequest) {
 
     if (date) {
       // Get specific date progress
-      const progress = await prisma.progressEntry.findUnique({
-        where: {
-          userId_date: {
-            userId,
-            date: new Date(date)
+      const progress = await withDatabaseRetry(async () => {
+        return await prisma.progressEntry.findUnique({
+          where: {
+            userId_date: {
+              userId,
+              date: new Date(date)
+            }
           }
-        }
+        })
       })
       return NextResponse.json(progress)
     } else {
       // Get all progress for user
-      const progress = await prisma.progressEntry.findMany({
-        where: { userId },
-        orderBy: { date: 'desc' }
+      const progress = await withDatabaseRetry(async () => {
+        return await prisma.progressEntry.findMany({
+          where: { userId },
+          orderBy: { date: 'desc' }
+        })
       })
       return NextResponse.json(progress)
     }
@@ -75,50 +79,52 @@ export async function POST(request: NextRequest) {
 
     console.log('Attempting to upsert progress entry for user:', userId, 'date:', date)
     
-    // Upsert progress entry
-    const progress = await prisma.progressEntry.upsert({
-      where: {
-        userId_date: {
+    // Upsert progress entry using retry logic
+    const progress = await withDatabaseRetry(async () => {
+      return await prisma.progressEntry.upsert({
+        where: {
+          userId_date: {
+            userId,
+            date: new Date(date)
+          }
+        },
+        update: {
+          stepsCompleted,
+          waterGoalMet,
+          proteinGoalMet,
+          sleepGoalMet,
+          readingCompleted,
+          supplementsTaken,
+          exerciseCompleted,
+          adultingTaskDone,
+          stepsCount,
+          waterIntake,
+          proteinIntake,
+          sleepHours,
+          readingMinutes,
+          exerciseMinutes,
+          adultingTask
+        },
+        create: {
           userId,
-          date: new Date(date)
+          date: new Date(date),
+          stepsCompleted,
+          waterGoalMet,
+          proteinGoalMet,
+          sleepGoalMet,
+          readingCompleted,
+          supplementsTaken,
+          exerciseCompleted,
+          adultingTaskDone,
+          stepsCount,
+          waterIntake,
+          proteinIntake,
+          sleepHours,
+          readingMinutes,
+          exerciseMinutes,
+          adultingTask
         }
-      },
-      update: {
-        stepsCompleted,
-        waterGoalMet,
-        proteinGoalMet,
-        sleepGoalMet,
-        readingCompleted,
-        supplementsTaken,
-        exerciseCompleted,
-        adultingTaskDone,
-        stepsCount,
-        waterIntake,
-        proteinIntake,
-        sleepHours,
-        readingMinutes,
-        exerciseMinutes,
-        adultingTask
-      },
-      create: {
-        userId,
-        date: new Date(date),
-        stepsCompleted,
-        waterGoalMet,
-        proteinGoalMet,
-        sleepGoalMet,
-        readingCompleted,
-        supplementsTaken,
-        exerciseCompleted,
-        adultingTaskDone,
-        stepsCount,
-        waterIntake,
-        proteinIntake,
-        sleepHours,
-        readingMinutes,
-        exerciseMinutes,
-        adultingTask
-      }
+      })
     })
 
     console.log('Progress entry saved successfully:', progress.id)
