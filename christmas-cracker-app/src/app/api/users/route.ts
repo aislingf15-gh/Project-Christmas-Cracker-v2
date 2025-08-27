@@ -46,24 +46,47 @@ export async function POST(request: NextRequest) {
 
     console.log('Creating new user with email:', email)
 
-    // Create user with default challenge settings
-    const user = await prisma.user.create({
-      data: {
-        email,
-        name,
-        challengeSettings: {
-          create: {
-            // Default settings will be applied from schema
-          }
-        }
-      },
-      include: {
-        challengeSettings: true
-      }
-    })
+    // Test database connection first
+    try {
+      await prisma.$connect()
+      console.log('Database connection successful')
+    } catch (dbError) {
+      console.error('Database connection failed:', dbError)
+      return NextResponse.json({ error: 'Database connection failed' }, { status: 500 })
+    }
 
-    console.log('User created successfully:', user.id)
-    return NextResponse.json(user)
+    // Create user with default challenge settings
+    try {
+      const user = await prisma.user.create({
+        data: {
+          email,
+          name,
+          challengeSettings: {
+            create: {
+              // Default settings will be applied from schema
+            }
+          }
+        },
+        include: {
+          challengeSettings: true
+        }
+      })
+
+      console.log('User created successfully:', user.id)
+      return NextResponse.json(user)
+    } catch (createError) {
+      console.error('User creation failed:', createError)
+      
+      // Check if it's a unique constraint violation
+      if (createError instanceof Error && createError.message.includes('Unique constraint')) {
+        return NextResponse.json({ error: 'User with this email already exists' }, { status: 409 })
+      }
+      
+      return NextResponse.json({ 
+        error: 'User creation failed', 
+        details: createError instanceof Error ? createError.message : 'Unknown error'
+      }, { status: 500 })
+    }
   } catch (error) {
     console.error('Error creating user:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
