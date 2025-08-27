@@ -4,12 +4,12 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// Create Prisma client with optimized settings for Supabase Transaction pooler
+// Create Prisma client with optimized settings for Supabase
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({
   log: ['error', 'warn'],
   datasources: {
     db: {
-      url: process.env.DATABASE_URL
+      url: process.env.POSTGRES_PRISMA_URL || process.env.DATABASE_URL
     }
   }
 })
