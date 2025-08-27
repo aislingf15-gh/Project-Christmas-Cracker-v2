@@ -21,7 +21,7 @@ import {
   CheckSquare,
   User,
   LogOut,
-  Settings,
+
   Check,
   Gift,
   Coffee,
@@ -58,6 +58,41 @@ interface ProgressEntry {
   readingMinutes?: number
   exerciseMinutes?: number
   adultingTask?: string
+}
+
+interface ApiProgressEntry {
+  id: string
+  date: string
+  stepsCompleted: boolean
+  waterGoalMet: boolean
+  proteinGoalMet: boolean
+  sleepGoalMet: boolean
+  readingCompleted: boolean
+  supplementsTaken: boolean
+  exerciseCompleted: boolean
+  adultingTaskDone: boolean
+  stepsCount?: number
+  waterIntake?: number
+  proteinIntake?: number
+  sleepHours?: number
+  readingMinutes?: number
+  exerciseMinutes?: number
+  adultingTask?: string
+}
+
+interface LeaderboardEntry {
+  id: string
+  userId: string
+  currentStreak: number
+  longestStreak: number
+  totalDaysTracked: number
+  perfectDays: number
+  lastUpdated: string
+  user: {
+    id: string
+    name: string
+    email: string
+  }
 }
 
 const dailyQuotes = [
@@ -112,7 +147,7 @@ const dailyQuotes = [
     affirmation: "I stay consistent and persistent in my journey."
   },
   {
-    quote: "The only bad workout is the one that didn't happen.",
+    quote: "The only bad workout is the one that didn&apos;t happen.",
     author: "Unknown",
     affirmation: "I show up for myself every single day."
   },
@@ -137,7 +172,7 @@ const dailyQuotes = [
     affirmation: "I celebrate every step forward, no matter how small."
   },
   {
-    quote: "You are what you do, not what you say you'll do.",
+    quote: "You are what you do, not what you say you&apos;ll do.",
     author: "Carl Jung",
     affirmation: "I am defined by my actions and consistency."
   },
@@ -189,7 +224,7 @@ const dailyQuotes = [
   {
     quote: "What you do today can improve all your tomorrows.",
     author: "Ralph Marston",
-    affirmation: "I invest in my future through today's actions."
+    affirmation: "I invest in my future through today&apos;s actions."
   }
 ]
 
@@ -197,7 +232,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState('overview')
   const [daysUntilChristmas, setDaysUntilChristmas] = useState(0)
   const [user, setUser] = useState<User | null>(null)
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+
   const [progressData, setProgressData] = useState<ProgressEntry[]>([])
   const [showSaveFeedback, setShowSaveFeedback] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -211,7 +246,7 @@ export default function Home() {
     if (user) {
       loadProgressFromAPI()
     }
-  }, [user])
+  }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const calculateDaysUntilChristmas = () => {
     const today = new Date()
@@ -243,7 +278,7 @@ export default function Home() {
       if (response.ok) {
         const data = await response.json()
         // Transform the data to match our frontend format
-        const transformedData = data.map((entry: any) => ({
+        const transformedData = data.map((entry: ApiProgressEntry) => ({
           id: entry.id,
           date: entry.date.split('T')[0], // Convert to YYYY-MM-DD format
           stepsCompleted: entry.stepsCompleted,
@@ -368,7 +403,6 @@ export default function Home() {
       
       setUser(user)
       localStorage.setItem('christmas-cracker-user', JSON.stringify(user))
-      setIsLoginModalOpen(false)
     } catch (error) {
       console.error('Error during login:', error)
     } finally {
@@ -468,12 +502,12 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center flex justify-center gap-6">
             <div className="bg-white px-8 py-6 rounded-xl border border-gray-200 shadow-lg w-96">
-              <p className="text-lg font-medium text-gray-900 mb-3">Today's Quote</p>
-              <p className="text-base text-gray-700 italic mb-3">"{dailyQuote.quote}"</p>
+              <p className="text-lg font-medium text-gray-900 mb-3">Today&apos;s Quote</p>
+              <p className="text-base text-gray-700 italic mb-3">&ldquo;{dailyQuote.quote}&rdquo;</p>
               <p className="text-sm text-gray-500">— {dailyQuote.author}</p>
             </div>
             <div className="bg-white px-8 py-6 rounded-xl border border-gray-200 shadow-lg w-96">
-              <p className="text-lg font-medium text-gray-900 mb-3">Today's Affirmation</p>
+              <p className="text-lg font-medium text-gray-900 mb-3">Today&apos;s Affirmation</p>
               <p className="text-base text-gray-700">{dailyQuote.affirmation}</p>
             </div>
           </div>
@@ -929,7 +963,7 @@ function TrackerTab({
     <div className="max-w-2xl mx-auto">
       <div className="bg-white p-8 rounded-lg border border-gray-200">
         <h2 className="text-2xl font-light text-gray-900 mb-8 text-center">
-          Today's Progress
+          Today&apos;s Progress
         </h2>
         
         {/* Date Selector */}
@@ -1019,7 +1053,7 @@ function ProgressTab({ progressData, user }: { progressData: ProgressEntry[], us
     const totalDays = progressData.length
     const perfectDays = progressData.filter(entry => 
       entry.stepsCompleted && entry.waterGoalMet && entry.proteinGoalMet && entry.sleepGoalMet && 
-      entry.readingCompleted && entry.supplementsTaken && entry.exerciseCompleted && entry.adultingTaskDone
+      entry.readingCompleted && entry.supplementsTaken && entry.exerciseCompleted
     ).length
     
     const totalCompletions = progressData.reduce((sum, entry) => {
@@ -1177,7 +1211,7 @@ function ProgressTab({ progressData, user }: { progressData: ProgressEntry[], us
 
 // Community Tab Component
 function CommunityTab() {
-  const [leaderboard, setLeaderboard] = useState<any[]>([])
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {

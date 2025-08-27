@@ -29,6 +29,20 @@ interface ProgressData {
   adultingTaskDone: boolean
 }
 
+interface ChartDataPoint {
+  date: string
+  completionRate: number
+  fullDate: Date
+}
+
+interface TooltipProps {
+  active?: boolean
+  payload?: Array<{
+    value: number
+  }>
+  label?: string
+}
+
 interface ProgressChartProps {
   data: ProgressData[]
   chartType?: 'line' | 'area' | 'bar'
@@ -40,7 +54,7 @@ export default function ProgressChart({
   chartType = 'line',
   height = 300 
 }: ProgressChartProps) {
-  const [chartData, setChartData] = useState<any[]>([])
+  const [chartData, setChartData] = useState<ChartDataPoint[]>([])
 
   useEffect(() => {
     if (data.length === 0) {
@@ -84,7 +98,7 @@ export default function ProgressChart({
     return Math.round((completed / activities.length) * 100)
   }
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-4 rounded-lg shadow-lg border border-red-200">
@@ -219,7 +233,11 @@ export default function ProgressChart({
         {['line', 'area', 'bar'].map((type) => (
           <button
             key={type}
-            onClick={() => (chartType as any) = type}
+            onClick={() => {
+              // Note: This would need to be handled by parent component
+              // For now, we'll just log the intended change
+              console.log('Chart type change requested:', type)
+            }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               chartType === type
                 ? 'bg-red-600 text-white'
