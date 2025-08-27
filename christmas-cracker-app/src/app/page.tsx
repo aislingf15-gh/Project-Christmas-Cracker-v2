@@ -436,6 +436,13 @@ export default function Home() {
             body: JSON.stringify(userData)
           })
           console.log('User creation response status:', response.status)
+          
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}))
+            console.error('User creation failed:', errorData)
+            throw new Error(`User creation failed: ${response.status}`)
+          }
+          
           user = await response.json()
         }
       } else {
@@ -449,14 +456,27 @@ export default function Home() {
           body: JSON.stringify(userData)
         })
         console.log('User creation response status:', response.status)
+        
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}))
+          console.error('User creation failed:', errorData)
+          throw new Error(`User creation failed: ${response.status}`)
+        }
+        
         user = await response.json()
       }
       
-      console.log('Login successful, user ID:', user.id)
+      if (!user || !user.id) {
+        console.error('User object is invalid:', user)
+        throw new Error('Invalid user object received')
+      }
+      
+      console.log('Login successful, user ID:', user.id, 'user object:', user)
       setUser(user)
       localStorage.setItem('christmas-cracker-user', JSON.stringify(user))
     } catch (error) {
       console.error('Error during login:', error)
+      alert(`Login failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setIsLoading(false)
     }
