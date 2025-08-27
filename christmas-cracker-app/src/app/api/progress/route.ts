@@ -39,6 +39,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+    console.log('Progress POST request body:', { ...body, userId: body.userId ? 'present' : 'missing' })
+    
     const {
       userId,
       date,
@@ -60,9 +62,12 @@ export async function POST(request: NextRequest) {
     } = body
 
     if (!userId || !date) {
+      console.error('Missing required fields:', { hasUserId: !!userId, hasDate: !!date })
       return NextResponse.json({ error: 'User ID and date are required' }, { status: 400 })
     }
 
+    console.log('Attempting to upsert progress entry for user:', userId, 'date:', date)
+    
     // Upsert progress entry
     const progress = await prisma.progressEntry.upsert({
       where: {
@@ -109,6 +114,7 @@ export async function POST(request: NextRequest) {
       }
     })
 
+    console.log('Progress entry saved successfully:', progress.id)
     return NextResponse.json(progress)
   } catch (error) {
     console.error('Error saving progress:', error)

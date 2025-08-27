@@ -6,7 +6,10 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const email = searchParams.get('email')
 
+    console.log('User GET request for email:', email)
+
     if (!email) {
+      console.error('Email is missing from request')
       return NextResponse.json({ error: 'Email is required' }, { status: 400 })
     }
 
@@ -21,6 +24,7 @@ export async function GET(request: NextRequest) {
       }
     })
 
+    console.log('User lookup result:', user ? 'found' : 'not found')
     return NextResponse.json(user)
   } catch (error) {
     console.error('Error fetching user:', error)
@@ -33,9 +37,14 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { email, name } = body
 
+    console.log('User POST request:', { email, name: name ? 'present' : 'missing' })
+
     if (!email || !name) {
+      console.error('Missing required fields for user creation:', { hasEmail: !!email, hasName: !!name })
       return NextResponse.json({ error: 'Email and name are required' }, { status: 400 })
     }
+
+    console.log('Creating new user with email:', email)
 
     // Create user with default challenge settings
     const user = await prisma.user.create({
@@ -53,6 +62,7 @@ export async function POST(request: NextRequest) {
       }
     })
 
+    console.log('User created successfully:', user.id)
     return NextResponse.json(user)
   } catch (error) {
     console.error('Error creating user:', error)
