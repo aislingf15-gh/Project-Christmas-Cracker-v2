@@ -307,10 +307,15 @@ export default function Home() {
   }
 
   const saveProgressToAPI = async (progress: ProgressEntry) => {
-    if (!user) return
+    if (!user) {
+      console.error('No user found when trying to save progress')
+      return
+    }
     
     try {
       setIsLoading(true)
+      console.log('Saving progress for user:', user.id, 'date:', progress.date)
+      
       const response = await fetch('/api/progress', {
         method: 'POST',
         headers: {
@@ -337,20 +342,27 @@ export default function Home() {
         })
       })
       
+      console.log('Progress save response status:', response.status)
+      
       if (response.ok) {
+        const savedProgress = await response.json()
+        console.log('Progress saved successfully:', savedProgress.id)
+        
         // Reload progress data
         await loadProgressFromAPI()
         
         // Update leaderboard
         if (user) {
           try {
-            await fetch('/api/leaderboard', {
+            console.log('Updating leaderboard for user:', user.id)
+            const leaderboardResponse = await fetch('/api/leaderboard', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({ userId: user.id })
             })
+            console.log('Leaderboard update response status:', leaderboardResponse.status)
           } catch (error) {
             console.error('Error updating leaderboard:', error)
           }
@@ -358,6 +370,9 @@ export default function Home() {
         
         setShowSaveFeedback(true)
         setTimeout(() => setShowSaveFeedback(false), 3000)
+      } else {
+        const errorData = await response.json()
+        console.error('Progress save failed:', errorData)
       }
     } catch (error) {
       console.error('Error saving progress:', error)
@@ -369,17 +384,22 @@ export default function Home() {
   const handleLogin = async (userData: { name: string; email: string }) => {
     try {
       setIsLoading(true)
+      console.log('Attempting login with:', { name: userData.name, email: userData.email })
       
       // Try to find existing user first
       let response = await fetch(`/api/users?email=${encodeURIComponent(userData.email)}`)
+      console.log('User lookup response status:', response.status)
+      
       let user: User
       
       if (response.ok) {
         const existingUser = await response.json()
+        console.log('Existing user found:', existingUser ? 'yes' : 'no')
         if (existingUser) {
           user = existingUser
         } else {
           // Create new user
+          console.log('Creating new user...')
           response = await fetch('/api/users', {
             method: 'POST',
             headers: {
@@ -387,10 +407,12 @@ export default function Home() {
             },
             body: JSON.stringify(userData)
           })
+          console.log('User creation response status:', response.status)
           user = await response.json()
         }
       } else {
         // Create new user
+        console.log('User lookup failed, creating new user...')
         response = await fetch('/api/users', {
           method: 'POST',
           headers: {
@@ -398,9 +420,11 @@ export default function Home() {
           },
           body: JSON.stringify(userData)
         })
+        console.log('User creation response status:', response.status)
         user = await response.json()
       }
       
+      console.log('Login successful, user ID:', user.id)
       setUser(user)
       localStorage.setItem('christmas-cracker-user', JSON.stringify(user))
     } catch (error) {
