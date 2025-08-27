@@ -511,11 +511,11 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-6xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
               {/* Logo */}
-              <div className="relative w-16 h-16">
+              <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0">
                 <Image
                   src="/logo.png"
                   alt="Christmas Cracker Logo"
@@ -525,35 +525,36 @@ export default function Home() {
                 />
               </div>
               
-              <div>
-                <h1 className="text-3xl font-light text-gray-900 mb-1">
+              <div className="min-w-0 flex-1">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-light text-gray-900 mb-1 truncate">
                   Project Christmas Cracker
                 </h1>
-                <p className="text-gray-600 text-sm mb-1">
+                <p className="text-gray-600 text-xs sm:text-sm mb-1 truncate">
                   Welcome back {user.name}!
                 </p>
-                <p className="text-green-800 text-sm font-medium">
+                <p className="text-green-800 text-xs sm:text-sm font-medium truncate">
                   Look & Feel Like a Cracker by Christmas!
                 </p>
               </div>
             </div>
             
             {/* User Menu */}
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-3 bg-white border border-gray-200 px-6 py-3 rounded-full shadow-sm">
-                <Clock className="w-5 h-5 text-gray-700" />
-                <span className="text-xl font-light text-gray-900">{daysUntilChristmas}</span>
-                <span className="text-gray-700 text-sm font-medium">days until Christmas</span>
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex items-center gap-2 sm:gap-3 bg-white border border-gray-200 px-3 sm:px-6 py-2 sm:py-3 rounded-full shadow-sm">
+                <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700 flex-shrink-0" />
+                <span className="text-lg sm:text-xl font-light text-gray-900">{daysUntilChristmas}</span>
+                <span className="text-gray-700 text-xs sm:text-sm font-medium hidden sm:inline">days until Christmas</span>
+                <span className="text-gray-700 text-xs font-medium sm:hidden">days</span>
               </div>
               
               <div className="relative group">
-                <button className="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-100 transition-colors">
-                  <User className="w-6 h-6 text-gray-600" />
+                <button className="flex items-center gap-2 p-2 sm:p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                  <User className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
                 </button>
-                <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                <div className="absolute right-0 top-full mt-2 w-48 sm:w-56 bg-white border border-gray-200 rounded-xl shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                   <div className="p-4 border-b border-gray-100">
-                    <p className="text-sm font-medium text-gray-900">{user.name}</p>
-                    <p className="text-xs text-gray-500">{user.email}</p>
+                    <p className="text-sm font-medium text-gray-900 truncate">{user.name}</p>
+                    <p className="text-xs text-gray-500 truncate">{user.email}</p>
                   </div>
                   <button
                     onClick={handleLogout}
@@ -570,17 +571,17 @@ export default function Home() {
       </header>
 
       {/* Daily Quote */}
-      <div className="bg-white py-6">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center flex justify-center gap-6">
-            <div className="bg-white px-8 py-6 rounded-xl border border-gray-200 shadow-lg w-96">
-              <p className="text-lg font-medium text-gray-900 mb-3">Today&apos;s Quote</p>
-              <p className="text-base text-gray-700 italic mb-3">&ldquo;{dailyQuote.quote}&rdquo;</p>
-              <p className="text-sm text-gray-500">— {dailyQuote.author}</p>
+      <div className="bg-white py-4 sm:py-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
+            <div className="bg-white px-6 sm:px-8 py-4 sm:py-6 rounded-xl border border-gray-200 shadow-lg w-full sm:w-96">
+              <p className="text-base sm:text-lg font-medium text-gray-900 mb-2 sm:mb-3">Today&apos;s Quote</p>
+              <p className="text-sm sm:text-base text-gray-700 italic mb-2 sm:mb-3">&ldquo;{dailyQuote.quote}&rdquo;</p>
+              <p className="text-xs sm:text-sm text-gray-500">— {dailyQuote.author}</p>
             </div>
-            <div className="bg-white px-8 py-6 rounded-xl border border-gray-200 shadow-lg w-96">
-              <p className="text-lg font-medium text-gray-900 mb-3">Today&apos;s Affirmation</p>
-              <p className="text-base text-gray-700">{dailyQuote.affirmation}</p>
+            <div className="bg-white px-6 sm:px-8 py-4 sm:py-6 rounded-xl border border-gray-200 shadow-lg w-full sm:w-96">
+              <p className="text-base sm:text-lg font-medium text-gray-900 mb-2 sm:mb-3">Today&apos;s Affirmation</p>
+              <p className="text-sm sm:text-base text-gray-700">{dailyQuote.affirmation}</p>
             </div>
           </div>
         </div>
@@ -588,21 +589,21 @@ export default function Home() {
 
       {/* Navigation */}
       <nav className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex justify-center space-x-1">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex justify-center space-x-1 overflow-x-auto">
             {tabs.map((tab) => {
               const Icon = tab.icon
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-3 px-8 py-4 text-sm font-medium transition-all duration-200 ${
+                  className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
                     activeTab === tab.id 
                       ? 'text-gray-900 border-b-2 border-gray-900 bg-gray-50' 
                       : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                   }`}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                   {tab.label}
                 </button>
               )
@@ -630,7 +631,7 @@ export default function Home() {
       )}
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-6 py-12">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {activeTab === 'overview' && <OverviewTab />}
         {activeTab === 'tracker' && <TrackerTab progressData={progressData} onSaveProgress={saveProgressToAPI} />}
         {activeTab === 'progress' && <ProgressTab progressData={progressData} user={user} />}
@@ -638,9 +639,9 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 py-8 mt-16">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="text-gray-500 text-sm">
+      <footer className="bg-white border-t border-gray-200 py-6 sm:py-8 mt-12 sm:mt-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+          <p className="text-gray-500 text-xs sm:text-sm">
             © 2024 Christmas Cracker
           </p>
         </div>
@@ -672,12 +673,12 @@ function LoginScreen({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 sm:px-6">
       <div className="max-w-md w-full">
-        <div className="bg-white p-8 rounded-lg border border-gray-200">
-          <div className="text-center mb-8">
-            <div className="flex justify-center mb-4">
-              <div className="relative w-20 h-20">
+        <div className="bg-white p-6 sm:p-8 rounded-lg border border-gray-200">
+          <div className="text-center mb-6 sm:mb-8">
+            <div className="flex justify-center mb-3 sm:mb-4">
+              <div className="relative w-16 h-16 sm:w-20 sm:h-20">
                 <Image
                   src="/logo.png"
                   alt="Christmas Cracker Logo"
@@ -687,20 +688,20 @@ function LoginScreen({
                 />
               </div>
             </div>
-            <h1 className="text-3xl font-light text-gray-900 mb-2">
+            <h1 className="text-2xl sm:text-3xl font-light text-gray-900 mb-1 sm:mb-2">
               Project Christmas Cracker
             </h1>
-            <p className="text-gray-600 mb-2">
+            <p className="text-gray-600 mb-1 sm:mb-2 text-sm sm:text-base">
               {isSignUp ? 'Create your account' : 'Sign in to continue'}
             </p>
-            <p className="text-green-800 text-sm">
+            <p className="text-green-800 text-xs sm:text-sm">
               Look & Feel Like a Cracker by Christmas!
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                 Name
               </label>
               <input
@@ -708,7 +709,7 @@ function LoginScreen({
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-gray-500 focus:outline-none"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:border-gray-500 focus:outline-none text-sm sm:text-base"
                 placeholder="Enter your name"
                 required
                 disabled={isLoading}
@@ -716,7 +717,7 @@ function LoginScreen({
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                 Email
               </label>
               <input
@@ -724,7 +725,7 @@ function LoginScreen({
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-gray-500 focus:outline-none"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:border-gray-500 focus:outline-none text-sm sm:text-base"
                 placeholder="Enter your email"
                 required
                 disabled={isLoading}
@@ -734,23 +735,23 @@ function LoginScreen({
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gray-900 text-white py-3 rounded-lg font-medium transition-colors hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gray-900 text-white py-2 sm:py-3 rounded-lg font-medium transition-colors hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
             >
               {isLoading ? 'Loading...' : (isSignUp ? 'Create Account' : 'Sign In')}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
+          <div className="mt-4 sm:mt-6 text-center">
             <button
               onClick={() => setIsSignUp(!isSignUp)}
-              className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+              className="text-xs sm:text-sm text-gray-600 hover:text-gray-900 transition-colors"
               disabled={isLoading}
             >
               {isSignUp ? 'Already have an account? Sign in' : 'Need an account? Sign up'}
             </button>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-gray-200">
+          <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
             <p className="text-xs text-gray-500 text-center">
               Your data is securely stored in the cloud
             </p>
@@ -852,23 +853,23 @@ function OverviewTab() {
   ]
 
   return (
-    <div className="space-y-16">
+    <div className="space-y-12 sm:space-y-16">
       {/* Challenge Overview */}
       <div>
-        <h2 className="text-2xl font-light text-gray-900 mb-8">
+        <h2 className="text-xl sm:text-2xl font-light text-gray-900 mb-6 sm:mb-8">
           Daily Requirements
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {requirements.map((req, index) => {
             const Icon = req.icon
             return (
-              <div key={index} className="bg-white p-8 rounded-xl border border-gray-200 hover:border-gray-300 transition-all duration-200 shadow-sm hover:shadow-md">
-                <div className={`flex justify-center mb-6 ${req.color}`}>
-                  <Icon className="w-8 h-8 stroke-[1.5]" />
+              <div key={index} className="bg-white p-6 sm:p-8 rounded-xl border border-gray-200 hover:border-gray-300 transition-all duration-200 shadow-sm hover:shadow-md">
+                <div className={`flex justify-center mb-4 sm:mb-6 ${req.color}`}>
+                  <Icon className="w-6 h-6 sm:w-8 sm:h-8 stroke-[1.5]" />
                 </div>
-                <h3 className="text-xl font-medium text-gray-900 mb-3 text-center">{req.title}</h3>
-                <p className="text-gray-600 text-sm text-center leading-relaxed">{req.detail}</p>
+                <h3 className="text-lg sm:text-xl font-medium text-gray-900 mb-2 sm:mb-3 text-center">{req.title}</h3>
+                <p className="text-gray-600 text-xs sm:text-sm text-center leading-relaxed">{req.detail}</p>
               </div>
             )
           })}
@@ -877,22 +878,22 @@ function OverviewTab() {
 
       {/* Adulting Tasks */}
       <div>
-        <h2 className="text-2xl font-light text-gray-900 mb-4">
+        <h2 className="text-xl sm:text-2xl font-light text-gray-900 mb-3 sm:mb-4">
           Weekly Adulting Tasks
         </h2>
-        <p className="text-gray-600 mb-8">
+        <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">
           Complete one task each week from any category
         </p>
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
           {taskCategories.map((category, index) => (
-            <div key={index} className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
-              <h3 className="text-xl font-medium text-gray-900 mb-6">{category.title}</h3>
-              <ul className="space-y-4">
+            <div key={index} className="bg-white p-6 sm:p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
+              <h3 className="text-lg sm:text-xl font-medium text-gray-900 mb-4 sm:mb-6">{category.title}</h3>
+              <ul className="space-y-3 sm:space-y-4">
                 {category.tasks.map((task, taskIndex) => (
-                  <li key={taskIndex} className="flex items-start gap-4 text-gray-700">
+                  <li key={taskIndex} className="flex items-start gap-3 sm:gap-4 text-gray-700">
                     <div className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0" />
-                    <span className="text-sm leading-relaxed">{task}</span>
+                    <span className="text-xs sm:text-sm leading-relaxed">{task}</span>
                   </li>
                 ))}
               </ul>
@@ -1033,26 +1034,26 @@ function TrackerTab({
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="bg-white p-8 rounded-lg border border-gray-200">
-        <h2 className="text-2xl font-light text-gray-900 mb-8 text-center">
+      <div className="bg-white p-6 sm:p-8 rounded-lg border border-gray-200">
+        <h2 className="text-xl sm:text-2xl font-light text-gray-900 mb-6 sm:mb-8 text-center">
           Today&apos;s Progress
         </h2>
         
         {/* Date Selector */}
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-6 sm:mb-8">
           <input
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:border-gray-500 focus:outline-none"
+            className="px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:border-gray-500 focus:outline-none text-sm sm:text-base"
           />
         </div>
 
         {/* Progress Bar */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-gray-700">Completion</span>
-            <span className="text-sm font-medium text-gray-900">{completionRate}%</span>
+            <span className="text-xs sm:text-sm font-medium text-gray-700">Completion</span>
+            <span className="text-xs sm:text-sm font-medium text-gray-900">{completionRate}%</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div 
@@ -1063,13 +1064,13 @@ function TrackerTab({
         </div>
 
         {/* Checklist */}
-        <div className="space-y-3">
+        <div className="space-y-2 sm:space-y-3">
           {checklistItems.map((item) => {
             const Icon = item.icon
             return (
               <div
                 key={item.id}
-                className={`flex items-center p-4 rounded-lg border transition-all duration-200 ${
+                className={`flex items-center p-3 sm:p-4 rounded-lg border transition-all duration-200 ${
                   checklist[item.id as keyof typeof checklist]
                     ? 'border-gray-300 bg-gray-50'
                     : 'border-gray-200 bg-white hover:border-gray-300'
@@ -1080,16 +1081,16 @@ function TrackerTab({
                   id={item.id}
                   checked={checklist[item.id as keyof typeof checklist]}
                   onChange={() => handleCheckboxChange(item.id)}
-                  className={`w-5 h-5 bg-white border-2 rounded focus:ring-2 mr-4 ${
+                  className={`w-4 h-4 sm:w-5 sm:h-5 bg-white border-2 rounded focus:ring-2 mr-3 sm:mr-4 ${
                     checklist[item.id as keyof typeof checklist]
                       ? 'text-green-800 border-green-800 focus:ring-green-800'
                       : 'text-gray-900 border-gray-300 focus:ring-gray-500'
                   }`}
                 />
-                <Icon className={`w-4 h-4 mr-3 stroke-[1.5] ${item.color}`} />
+                <Icon className={`w-4 h-4 mr-2 sm:mr-3 stroke-[1.5] ${item.color}`} />
                 <label
                   htmlFor={item.id}
-                  className={`flex-1 cursor-pointer ${
+                  className={`flex-1 cursor-pointer text-sm sm:text-base ${
                     checklist[item.id as keyof typeof checklist]
                       ? 'text-gray-500 line-through'
                       : 'text-gray-700'
@@ -1103,10 +1104,10 @@ function TrackerTab({
         </div>
 
         {/* Save Button */}
-        <div className="text-center mt-8">
+        <div className="text-center mt-6 sm:mt-8">
           <button 
             onClick={handleSaveProgress}
-            className="bg-gray-900 text-white px-8 py-3 rounded-lg font-medium transition-colors hover:bg-gray-800"
+            className="bg-gray-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium transition-colors hover:bg-gray-800 text-sm sm:text-base"
           >
             Save Progress
           </button>
@@ -1201,23 +1202,23 @@ function ProgressTab({ progressData, user }: { progressData: ProgressEntry[], us
   ]
 
   return (
-    <div className="space-y-12">
-      <div className="bg-white p-8 rounded-lg border border-gray-200">
-        <h2 className="text-2xl font-light text-gray-900 mb-8 text-center">
+    <div className="space-y-8 sm:space-y-12">
+      <div className="bg-white p-6 sm:p-8 rounded-lg border border-gray-200">
+        <h2 className="text-xl sm:text-2xl font-light text-gray-900 mb-6 sm:mb-8 text-center">
           Progress Overview
         </h2>
         
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {statItems.map((stat, index) => {
             const Icon = stat.icon
             return (
               <div key={index} className="text-center">
-                <div className={`flex justify-center mb-4 ${stat.color}`}>
-                  <Icon className="w-6 h-6 stroke-[1.5]" />
+                <div className={`flex justify-center mb-3 sm:mb-4 ${stat.color}`}>
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.5]" />
                 </div>
-                <div className="text-3xl font-light text-gray-900 mb-2">{stat.value}</div>
-                <div className="text-gray-600 text-sm">{stat.label}</div>
+                <div className="text-2xl sm:text-3xl font-light text-gray-900 mb-1 sm:mb-2">{stat.value}</div>
+                <div className="text-gray-600 text-xs sm:text-sm">{stat.label}</div>
               </div>
             )
           })}
@@ -1225,21 +1226,21 @@ function ProgressTab({ progressData, user }: { progressData: ProgressEntry[], us
 
         {/* Recent Activity */}
         {progressData.length > 0 ? (
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Activity</h3>
-            <div className="space-y-3">
+          <div className="space-y-3 sm:space-y-4">
+            <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">Recent Activity</h3>
+            <div className="space-y-2 sm:space-y-3">
               {progressData.slice(0, 7).map((entry, index) => {
                 const completedCount = Object.values(entry).filter(Boolean).length - 1 // -1 for date
                 const completionRate = Math.round((completedCount / 8) * 100)
                 return (
-                  <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={index} className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg">
                     <div>
-                      <p className="font-medium text-gray-900">{new Date(entry.date).toLocaleDateString()}</p>
-                      <p className="text-sm text-gray-600">{completedCount}/8 tasks completed</p>
+                      <p className="font-medium text-gray-900 text-sm sm:text-base">{new Date(entry.date).toLocaleDateString()}</p>
+                      <p className="text-xs sm:text-sm text-gray-600">{completedCount}/8 tasks completed</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium text-gray-900">{completionRate}%</p>
-                      <div className="w-20 bg-gray-200 rounded-full h-1 mt-1">
+                      <p className="font-medium text-gray-900 text-sm sm:text-base">{completionRate}%</p>
+                      <div className="w-16 sm:w-20 bg-gray-200 rounded-full h-1 mt-1">
                         <div 
                           className="h-full bg-gray-900 rounded-full" 
                           style={{ width: `${completionRate}%` }}
@@ -1252,18 +1253,18 @@ function ProgressTab({ progressData, user }: { progressData: ProgressEntry[], us
             </div>
           </div>
         ) : (
-          <div className="bg-gray-50 rounded-lg p-8 text-center">
-            <TrendingUp className="w-10 h-10 text-gray-400 mx-auto mb-4 stroke-[1.5]" />
-            <p className="text-gray-500">Start tracking to see your progress</p>
+          <div className="bg-gray-50 rounded-lg p-6 sm:p-8 text-center">
+            <TrendingUp className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400 mx-auto mb-3 sm:mb-4 stroke-[1.5]" />
+            <p className="text-gray-500 text-sm sm:text-base">Start tracking to see your progress</p>
           </div>
         )}
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mt-8">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">
           <button 
             onClick={handleShareProgress}
             disabled={isSharing || progressData.length === 0}
-            className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 sm:px-6 py-2 sm:py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
           >
             {isSharing ? 'Sharing...' : 'Share Progress'}
           </button>
@@ -1272,8 +1273,8 @@ function ProgressTab({ progressData, user }: { progressData: ProgressEntry[], us
 
       {/* Share Feedback */}
       {showShareFeedback && (
-        <div className="fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2">
-          <Check className="w-5 h-5" />
+        <div className="fixed top-4 right-4 bg-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow-lg z-50 flex items-center gap-2 text-sm sm:text-base">
+          <Check className="w-4 h-4 sm:w-5 sm:h-5" />
           <span>Progress shared to community leaderboard!</span>
         </div>
       )}
@@ -1315,15 +1316,15 @@ function CommunityTab() {
   }
 
   return (
-    <div className="bg-white p-8 rounded-lg border border-gray-200">
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-light text-gray-900">
+    <div className="bg-white p-6 sm:p-8 rounded-lg border border-gray-200">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
+        <h2 className="text-xl sm:text-2xl font-light text-gray-900">
           Community Leaderboard
         </h2>
         <button 
           onClick={loadLeaderboard}
           disabled={isLoading}
-          className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
+          className="px-3 sm:px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 text-sm sm:text-base"
         >
           {isLoading ? 'Loading...' : 'Refresh'}
         </button>
@@ -1331,60 +1332,60 @@ function CommunityTab() {
       
       {isLoading ? (
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading leaderboard...</p>
+          <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-2 text-gray-600 text-sm sm:text-base">Loading leaderboard...</p>
         </div>
       ) : leaderboard.length > 0 ? (
         <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6 p-3 sm:p-4 bg-gray-50 rounded-lg">
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900">{leaderboard.length}</div>
-              <div className="text-sm text-gray-600">Active Users</div>
+              <div className="text-xl sm:text-2xl font-bold text-gray-900">{leaderboard.length}</div>
+              <div className="text-xs sm:text-sm text-gray-600">Active Users</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">
+              <div className="text-xl sm:text-2xl font-bold text-green-600">
                 {Math.max(...leaderboard.map(entry => entry.currentStreak))}
               </div>
-              <div className="text-sm text-gray-600">Best Streak</div>
+              <div className="text-xs sm:text-sm text-gray-600">Best Streak</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">
+              <div className="text-xl sm:text-2xl font-bold text-blue-600">
                 {Math.max(...leaderboard.map(entry => entry.longestStreak))}
               </div>
-              <div className="text-sm text-gray-600">Longest Streak</div>
+              <div className="text-xs sm:text-sm text-gray-600">Longest Streak</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">
+              <div className="text-xl sm:text-2xl font-bold text-purple-600">
                 {leaderboard.reduce((sum, entry) => sum + entry.perfectDays, 0)}
               </div>
-              <div className="text-sm text-gray-600">Perfect Days</div>
+              <div className="text-xs sm:text-sm text-gray-600">Perfect Days</div>
             </div>
           </div>
           
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {leaderboard.map((entry, index) => (
-              <div key={entry.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-medium">
+              <div key={entry.id} className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-900 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-medium flex-shrink-0">
                     {index + 1}
                   </div>
-                  <div>
-                    <p className="font-medium text-gray-900">{entry.user.name}</p>
-                    <p className="text-sm text-gray-600">{entry.totalDaysTracked} days tracked</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-gray-900 text-sm sm:text-base truncate">{entry.user.name}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">{entry.totalDaysTracked} days tracked</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="flex items-center gap-4">
+                <div className="text-right flex-shrink-0">
+                  <div className="flex items-center gap-2 sm:gap-4">
                     <div className="text-center">
-                      <p className="text-lg font-bold text-green-600">{entry.currentStreak}</p>
+                      <p className="text-base sm:text-lg font-bold text-green-600">{entry.currentStreak}</p>
                       <p className="text-xs text-gray-600">Current</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-lg font-bold text-blue-600">{entry.longestStreak}</p>
+                      <p className="text-base sm:text-lg font-bold text-blue-600">{entry.longestStreak}</p>
                       <p className="text-xs text-gray-600">Longest</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-lg font-bold text-purple-600">{entry.perfectDays}</p>
+                      <p className="text-base sm:text-lg font-bold text-purple-600">{entry.perfectDays}</p>
                       <p className="text-xs text-gray-600">Perfect</p>
                     </div>
                   </div>
@@ -1395,9 +1396,9 @@ function CommunityTab() {
         </div>
       ) : (
         <div className="text-center text-gray-600">
-          <Users className="w-10 h-10 text-gray-400 mx-auto mb-4 stroke-[1.5]" />
-          <p className="text-lg mb-2">No users on the leaderboard yet</p>
-          <p className="text-sm">Start tracking to see your progress!</p>
+          <Users className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400 mx-auto mb-3 sm:mb-4 stroke-[1.5]" />
+          <p className="text-base sm:text-lg mb-1 sm:mb-2">No users on the leaderboard yet</p>
+          <p className="text-xs sm:text-sm">Start tracking to see your progress!</p>
         </div>
       )}
     </div>
