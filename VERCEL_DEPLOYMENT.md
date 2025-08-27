@@ -1,12 +1,12 @@
 # Vercel Deployment Fix Guide
 
-## Issue: "User ID is required" Error
+## Issue: Prepared Statement Error with Supabase
 
-Your Christmas Cracker app is deployed on Vercel but the daily tracker is not saving progress. The error "User ID is required" indicates that the user authentication or database connection is failing.
+Your Christmas Cracker app is deployed on Vercel but experiencing database connection issues. The error "prepared statement already exists" indicates a common problem with Prisma and PostgreSQL in serverless environments, especially with Supabase.
 
 ## Root Cause
 
-The main issue is likely that your environment variables are not properly configured in Vercel, causing the database connection to fail.
+The main issue is that Prisma creates prepared statements for database queries, but Supabase's Transaction pooler (which is required for serverless environments) does not support prepared statements. This causes conflicts when Prisma tries to use prepared statements.
 
 ## Step-by-Step Fix
 
@@ -18,16 +18,37 @@ The main issue is likely that your environment variables are not properly config
 4. Add the following environment variables:
 
 ```
-DATABASE_URL=postgresql://postgres:M25albay25!@db.weovzieksanrzpaacbed.supabase.co:5432/postgres
+DATABASE_URL=postgresql://postgres.weovzieksanrzpaacbed:M25albay25!@aws-1-eu-west-2.pooler.supabase.com:5432/postgres
 NEXT_PUBLIC_SUPABASE_URL=https://weovzieksanrzpaacbed.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlb3Z6aWVrc2FucnpwYWFjYmVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3ODk1NjIsImV4cCI6MjA3MTM2NTU2Mn0.Q0dKfwh1h84HorWkTvdaf4aNWIFob8U8ss8MiUcJY60
 NODE_ENV=production
 ```
 
+**Important**: You need to use the **Direct connection** string from Supabase:
+- Go to your Supabase dashboard
+- Navigate to **Settings** → **Database**
+- Click on **Connection String** tab
+- Select **ORMs** tab
+- Choose **Prisma**
+- Copy the **Direct connection** string (not the Connection Pooling one)
+- Replace `[YOUR-PASSWORD]` with your actual password: `M25albay25!`
+
+The key differences in the Direct connection URL:
+- Uses port `5432` (not 6543)
+- No `?pgbouncer=true` parameters needed
+- This is a direct connection that fully supports Prisma's prepared statements
+
 5. Make sure to select **Production**, **Preview**, and **Development** environments
 6. Click **Save**
 
-### 2. Test Database Connection
+### 2. Verify Supabase Connection Pooling
+
+1. Go to your Supabase dashboard
+2. Navigate to **Settings** → **Database**
+3. Under **Connection Pooling**, make sure it's enabled
+4. The pool size should be set to 15 (which is good for your Nano plan)
+
+### 3. Test Database Connection
 
 After adding the environment variables, visit your deployed app and go to:
 ```
@@ -37,15 +58,16 @@ https://your-app.vercel.app/api/debug
 This will show you if:
 - Environment variables are properly set
 - Database connection is working
+- Prepared statement errors are resolved
 
-### 3. Redeploy Your App
+### 4. Redeploy Your App
 
 1. In Vercel dashboard, go to **Deployments**
 2. Find your latest deployment
 3. Click the three dots menu
 4. Select **Redeploy**
 
-### 4. Test the Fix
+### 5. Test the Fix
 
 1. Visit your deployed app
 2. Create a new account or log in
@@ -57,10 +79,17 @@ This will show you if:
 ### If the debug endpoint shows database connection failure:
 
 1. **Check Supabase Database**: Make sure your Supabase database is active and accessible
-2. **Verify Connection String**: Double-check the DATABASE_URL format
+2. **Verify Connection String**: Double-check that you're using the Direct connection string, not the Transaction pooler
 3. **Check IP Restrictions**: Ensure Vercel's IP addresses are allowed in Supabase
 
-### If user creation fails:
+### If prepared statement errors persist:
+
+1. **Verify Direct Connection**: Make sure you're using the Direct connection string (port 5432), not Transaction pooler (port 6543)
+2. **Clear Function Cache**: In Vercel dashboard, go to **Functions** and clear any cached functions
+3. **Check Connection Pooling**: Verify Supabase connection pooling is properly configured
+4. **Monitor Function Logs**: Check Vercel function logs for detailed error messages
+
+### If user creation still fails:
 
 1. Check the browser console for errors
 2. Check Vercel function logs in the dashboard
@@ -91,12 +120,16 @@ After deployment, monitor your app's performance:
 1. Check Vercel Analytics for any errors
 2. Monitor database connection usage
 3. Watch for any API timeouts or failures
+4. Monitor prepared statement errors in Supabase logs
 
 ## Additional Notes
 
-- The app uses localStorage for user session management, which should work fine in production
+- The app now includes retry logic for database operations
+- Connection pooling is optimized for serverless environments
+- Prepared statement errors are handled gracefully with automatic reconnection
 - All API routes now have improved error logging to help debug issues
 - The debug endpoint will help identify configuration problems
+- **Important**: The Direct connection fully supports prepared statements, which eliminates the core issue
 
 ## Support
 
@@ -105,3 +138,4 @@ If you continue to have issues after following these steps:
 1. Check the Vercel function logs for detailed error messages
 2. Verify your Supabase database is properly configured
 3. Test the API endpoints directly using tools like Postman or curl
+4. Consider upgrading to Supabase Pro for better connection pooling options
