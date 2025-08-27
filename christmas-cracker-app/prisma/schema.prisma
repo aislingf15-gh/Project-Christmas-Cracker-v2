@@ -25,7 +25,7 @@ model User {
   challengeSettings ChallengeSettings?
   leaderboardEntry LeaderboardEntry?
 
-  @@map("users")
+  @@map("User")
 }
 
 model ProgressEntry {
@@ -59,7 +59,7 @@ model ProgressEntry {
   
   // Composite unique constraint
   @@unique([userId, date])
-  @@map("progress_entries")
+  @@map("ProgressEntry")
 }
 
 model ChallengeSettings {
@@ -86,7 +86,7 @@ model ChallengeSettings {
   // Relations
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("challenge_settings")
+  @@map("ChallengeSettings")
 }
 
 model LeaderboardEntry {
@@ -101,5 +101,5 @@ model LeaderboardEntry {
   // Relations
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("leaderboard_entries")
+  @@map("LeaderboardEntry")
 }
